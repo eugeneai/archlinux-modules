@@ -1,6 +1,6 @@
 # Packages for Arch Linux
 
-    `arch-packages`
+Welcome to projectlet `arch-packages`.
 
 This is a set of arch packages adapted for some special purposes.
 
@@ -10,7 +10,8 @@ Package `hunspell-emacs` supplies a new version of `hunspell`, it is installed i
 
 Further installation is taken from [somewhere]. My setup for emacs (namely spacemacs) is as follows:
 
-`; ########### HUNSPELL in EMACS ########################
+```lisp
+; ########### HUNSPELL in EMACS ########################
 
 ;; List of dictionaries used.
 (setq ispell-local-dictionary-alist
@@ -40,4 +41,4 @@ Further installation is taken from [somewhere]. My setup for emacs (namely space
 (global-set-key (kbd "<f8>")   'fd-switch-dictionary)
 
 ; ########### END HUNSPELL in EMACS ########################
-`
+```
