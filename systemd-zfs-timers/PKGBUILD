@@ -8,10 +8,11 @@ url="https://github.com/eugeneai/arch-packages/tree/master/systemd-zfs-timers"
 license=('MIT')
 depends=('zfs-utils')
 #source=("git+https://github.com/lnicola/systemd-zpool-scrub.git")
-md5sums=('SKIP')
+#md5sums=('SKIP')
 
 package() {
-    install -Dm644 "$pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-    install -Dm644 "$pkgname/zpool-scrub@.service" "$pkgdir/usr/lib/systemd/system/zpool-scrub@.service"
-    install -Dm644 "$pkgname/zpool-scrub@.timer" "$pkgdir/usr/lib/systemd/system/zpool-scrub@.timer"
+    pwd
+    install -Dm644 "../$pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -Dm644 "../$pkgname/zpool-scrub@.service" "$pkgdir/usr/lib/systemd/system/zpool-scrub@.service"
+    install -Dm644 "../$pkgname/zpool-scrub@.timer" "$pkgdir/usr/lib/systemd/system/zpool-scrub@.timer"
 }
