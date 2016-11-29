@@ -1,0 +1,21 @@
+pkgname=ttf-elegant-script
+pkgver=1.0
+pkgrel=1
+pkgdesc="Elegent Script Commercial Font"
+arch=(any)
+depends=(fontconfig xorg-font-utils)
+source=("elegantscriptfonts.zip")
+install=$pkgname.install
+
+package() {
+  cd truetype
+  SAVEIFS=$IFS
+  IFS=$(echo -en "\n\b")
+  for font in $(ls *.ttf)
+  do
+    #echo $font
+    install -Dm644 "$font" "$pkgdir/usr/share/fonts/elegant-script/$font"
+  done
+  IFS=$SAVEIFS
+}
+md5sums=('2c64c8c3960fe3764a8a824f88764d14')
