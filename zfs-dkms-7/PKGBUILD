@@ -7,7 +7,7 @@ pkgname=("zfs-dkms-7" "zfs-utils-7")
 _pkgver=0.7.0
 _pkgver_base=${_pkgver%-*}
 pkgver=${_pkgver//-rc/.}
-pkgrel=1
+pkgrel=2
 license=('CDDL')
 makedepends=("git" "spl-dkms-7=${pkgver}")
 arch=("i686" "x86_64")
@@ -59,6 +59,7 @@ package_zfs-dkms-7() {
 package_zfs-utils-7() {
     pkgdesc="Kernel module support files for the Zettabyte File System -- release candidates"
     conflicts=("zfs-utils-git" "zfs-utils-lts" "zfs-dkms")
+    provides=("zfs-utils")
 
     cd "${srcdir}/zfs-${_pkgver_base}"
     make DESTDIR="${pkgdir}" install
