@@ -4,10 +4,10 @@
 
 pkgbase="zfs-dkms-7"
 pkgname=("zfs-dkms-7" "zfs-utils-7")
-_pkgver=0.7.0
+_pkgver=0.7.1
 _pkgver_base=${_pkgver%-*}
 pkgver=${_pkgver//-rc/.}
-pkgrel=2
+pkgrel=1
 license=('CDDL')
 makedepends=("git" "spl-dkms-7=${pkgver}")
 arch=("i686" "x86_64")
@@ -16,7 +16,7 @@ source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${_pkgver}/zfs-
         "zfs.bash-completion-r1"
         "zfs.initcpio.install"
         "zfs.initcpio.hook")
-sha256sums=('6907524f5ca4149b799fe65cd31b552b0ae90dba5dc20524e1a24fc708d807d2'
+sha256sums=('231b104979ddacfeb1889e1dec175337276e7b3b109d40656089744b5caf3ef6'
             'b60214f70ffffb62ffe489cbfabd2e069d14ed2a391fac0e36f914238394b540'
             '17114052aa20c528f022f7f1349971aa28810e2ed2c97871226b5679a91f7e77'
             '138964b43d7a282e1ed5f7fcf1f8dc9baa4f664655b628eeac1912a3017a787b')
@@ -58,7 +58,7 @@ package_zfs-dkms-7() {
 
 package_zfs-utils-7() {
     pkgdesc="Kernel module support files for the Zettabyte File System -- release candidates"
-    conflicts=("zfs-utils-git" "zfs-utils-lts" "zfs-dkms")
+    conflicts=("zfs-utils-git" "zfs-utils-lts" "zfs-dkms" "zfs-utils")
     provides=("zfs-utils")
 
     cd "${srcdir}/zfs-${_pkgver_base}"
