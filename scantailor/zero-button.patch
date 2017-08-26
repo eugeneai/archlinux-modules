@@ -1,0 +1,271 @@
+unchanged:
+--- scantailor-EXPERIMENTAL_2015_10_27/filters/page_layout/OptionsWidget.cpp	2015-10-28 05:08:01.000000000 +0800
++++ scantailor-EXPERIMENTAL_2015_10_27-patch/filters/page_layout/OptionsWidget.cpp	2017-08-26 11:27:39.028100622 +0800
+@@ -133,6 +133,10 @@
+ 		this, SLOT(leftRightLinkClicked())
+ 	);
+ 	connect(
++		zeroMarginsBtn, SIGNAL(clicked()),
++		this, SLOT(zeroMarginsBtnClicked())
++	);
++	connect(
+ 		applyMarginsBtn, SIGNAL(clicked()),
+ 		this, SLOT(showApplyMarginsDialog())
+ 	);
+@@ -272,6 +276,17 @@
+ }
+ 
+ void
++OptionsWidget::zeroMarginsBtnClicked()
++{
++	topMarginSpinBox->setValue(0.0);
++	bottomMarginSpinBox->setValue(0.0);
++	leftMarginSpinBox->setValue(0.0);
++	rightMarginSpinBox->setValue(0.0);
++	
++	updateMarginsDisplay();
++}
++
++void
+ OptionsWidget::topBottomLinkClicked()
+ {
+ 	m_topBottomLinked = !m_topBottomLinked;
+unchanged:
+--- scantailor-EXPERIMENTAL_2015_10_27/filters/page_layout/OptionsWidget.h	2015-10-28 05:08:01.000000000 +0800
++++ scantailor-EXPERIMENTAL_2015_10_27-patch/filters/page_layout/OptionsWidget.h	2017-08-26 11:27:39.028100622 +0800
+@@ -95,6 +95,8 @@
+ 
+ 	void matchSizeScaleToggled(bool selected);
+ 	
++	void zeroMarginsBtnClicked();
++	
+ 	void alignmentButtonClicked();
+ 	
+ 	void showApplyMarginsDialog();
+unchanged:
+--- scantailor-EXPERIMENTAL_2015_10_27/filters/page_layout/ui/PageLayoutOptionsWidget.ui	2015-10-28 05:08:01.000000000 +0800
++++ scantailor-EXPERIMENTAL_2015_10_27-patch/filters/page_layout/ui/PageLayoutOptionsWidget.ui	2017-08-26 11:27:39.028100622 +0800
+@@ -219,6 +219,43 @@
+          </spacer>
+         </item>
+         <item>
++         <widget class="QPushButton" name="zeroMarginsBtn">
++          <property name="text">
++           <string>Set to zero</string>
++          </property>
++         </widget>
++        </item>
++        <item>
++         <spacer name="horizontalSpacer_10">
++          <property name="orientation">
++           <enum>Qt::Horizontal</enum>
++          </property>
++          <property name="sizeHint" stdset="0">
++           <size>
++            <width>1</width>
++            <height>1</height>
++           </size>
++          </property>
++         </spacer>
++        </item>
++       </layout>
++      </item>
++      <item>
++       <layout class="QHBoxLayout" name="horizontalLayout_51">
++        <item>
++         <spacer name="horizontalSpacer_91">
++          <property name="orientation">
++           <enum>Qt::Horizontal</enum>
++          </property>
++          <property name="sizeHint" stdset="0">
++           <size>
++            <width>1</width>
++            <height>1</height>
++           </size>
++          </property>
++         </spacer>
++        </item>
++        <item>
+          <widget class="QPushButton" name="applyMarginsBtn">
+           <property name="text">
+            <string>Apply To ...</string>
+@@ -226,7 +263,7 @@
+          </widget>
+         </item>
+         <item>
+-         <spacer name="horizontalSpacer_10">
++         <spacer name="horizontalSpacer_101">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+@@ -681,6 +718,7 @@
+   <tabstop>leftRightLink</tabstop>
+   <tabstop>leftMarginSpinBox</tabstop>
+   <tabstop>rightMarginSpinBox</tabstop>
++  <tabstop>zeroMarginsBtn</tabstop>
+   <tabstop>applyMarginsBtn</tabstop>
+   <tabstop>alignTopLeftBtn</tabstop>
+   <tabstop>alignTopBtn</tabstop>
+only in patch2:
+unchanged:
+--- scantailor-EXPERIMENTAL_2015_10_27/translations/scantailor_ru.ts	2015-10-28 05:08:01.000000000 +0800
++++ scantailor-EXPERIMENTAL_2015_10_27-patch/translations/scantailor_ru.ts	2017-08-26 11:30:58.574673698 +0800
+@@ -105,36 +105,41 @@
+     </message>
+     <message>
+         <location filename="../ui/AboutDialog.ui" line="261"/>
++        <source>uciN - Romanian</source>
++        <translation type="unfinished"></translation>
++    </message>
++    <message>
++        <location filename="../ui/AboutDialog.ui" line="268"/>
+         <source>Joseph Artsimovich - Russian</source>
+         <translation></translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="268"/>
++        <location filename="../ui/AboutDialog.ui" line="275"/>
+         <source>Hxcan Cai - Simplified Chinese</source>
+         <translation type="unfinished"></translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="275"/>
++        <location filename="../ui/AboutDialog.ui" line="282"/>
+         <source>Marián Hvolka - Slovak</source>
+         <translation></translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="282"/>
++        <location filename="../ui/AboutDialog.ui" line="289"/>
+         <source>Flavio Benelli - Spanish</source>
+         <translation></translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="289"/>
++        <location filename="../ui/AboutDialog.ui" line="296"/>
+         <source>Davidson Wang - Traditional Chinese</source>
+         <translation></translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="296"/>
++        <location filename="../ui/AboutDialog.ui" line="303"/>
+         <source>Yuri Chornoivan - Ukrainian</source>
+         <translation></translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="323"/>
++        <location filename="../ui/AboutDialog.ui" line="330"/>
+         <source>denver 22</source>
+         <translation></translation>
+     </message>
+@@ -175,17 +180,17 @@
+ </translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="308"/>
++        <location filename="../ui/AboutDialog.ui" line="315"/>
+         <source>Documentation</source>
+         <translation>Документация</translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="364"/>
++        <location filename="../ui/AboutDialog.ui" line="371"/>
+         <source>References</source>
+         <translation type="unfinished"></translation>
+     </message>
+     <message>
+-        <location filename="../ui/AboutDialog.ui" line="465"/>
++        <location filename="../ui/AboutDialog.ui" line="472"/>
+         <source>License</source>
+         <translation>Лицензия</translation>
+     </message>
+@@ -1406,15 +1411,15 @@
+     <message>
+         <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="56"/>
+         <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="129"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="342"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="368"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="394"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="420"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="446"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="475"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="501"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="527"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="553"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="379"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="405"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="431"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="457"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="483"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="512"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="538"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="564"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="590"/>
+         <source>...</source>
+         <translation></translation>
+     </message>
+@@ -1435,37 +1440,42 @@
+     </message>
+     <message>
+         <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="224"/>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="611"/>
++        <source>Set to zero</source>
++        <translation>Обнулить поля</translation>
++    </message>
++    <message>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="261"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="648"/>
+         <source>Apply To ...</source>
+         <translation>Применить к ...</translation>
+     </message>
+     <message>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="249"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="286"/>
+         <source>Alignment</source>
+         <translation>Выравнивание</translation>
+     </message>
+     <message>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="275"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="312"/>
+         <source>Don&apos;t match size</source>
+         <translation type="unfinished"></translation>
+     </message>
+     <message>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="285"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="322"/>
+         <source>Match size by growing margins</source>
+         <translation type="unfinished"></translation>
+     </message>
+     <message>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="295"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="332"/>
+         <source>Match size by scaling</source>
+         <translation type="unfinished"></translation>
+     </message>
+     <message>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="636"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="673"/>
+         <source>Missing content box</source>
+         <translation type="unfinished"></translation>
+     </message>
+     <message>
+-        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="649"/>
++        <location filename="../filters/page_layout/ui/PageLayoutOptionsWidget.ui" line="686"/>
+         <source>As there is no content box, the output will be a blank white page with size matching that of other pages.</source>
+         <translation type="unfinished"></translation>
+     </message>
+@@ -2468,12 +2478,12 @@
+ <context>
+     <name>page_layout::OptionsWidget</name>
+     <message>
+-        <location filename="../filters/page_layout/OptionsWidget.cpp" line="351"/>
++        <location filename="../filters/page_layout/OptionsWidget.cpp" line="366"/>
+         <source>Apply Margins</source>
+         <translation>Применить поля</translation>
+     </message>
+     <message>
+-        <location filename="../filters/page_layout/OptionsWidget.cpp" line="366"/>
++        <location filename="../filters/page_layout/OptionsWidget.cpp" line="381"/>
+         <source>Apply Alignment</source>
+         <translation>Применить выравнивание</translation>
+     </message>
