@@ -1,5 +1,5 @@
 # Maintainer: rafaelsoaresbr <rafaelsoaresbr@gmail.com>
-# Maintainer: llde 
+# Maintainer: llde
 # modelio-bin
 # Contributing: https://github.com/rafaelsoaresbr/pkgbuild
 # Builds: https://gitlab.com/rafaelsoaresbr/pkgbuild/builds
@@ -7,8 +7,10 @@
 pkgname=modelio-bin
 
 # Version
-pkgver=3.6.1
+pkgmajorver=3.7
+pkgver=${pkgmajorver}.0
 pkgrel=1
+pkgdaterel=201711211349
 
 # Generic
 pkgdesc="The opensource modeling environment"
@@ -36,9 +38,10 @@ changelog=changelog
 
 # Sources
 source=("modelio.desktop" "changelog")
-source_i686=("modelio-${pkgver}-i686::https://sourceforge.net/projects/modeliouml/files/${pkgver}/modelio-open-source-${pkgver}_i386.deb/download")
-source_x86_64=("modelio-${pkgver}-x86_64::https://sourceforge.net/projects/modeliouml/files/${pkgver}/modelio-open-source-${pkgver}_amd64.deb/download
+source_i686=("modelio-${pkgver}-i686::https://sourceforge.net/projects/modeliouml/files/${pkgver}/modelio-open-source${pkgmajorver}_${pkgver}-${pkgdaterel}_i386.deb/download")
+source_x86_64=("modelio-${pkgver}-x86_64::https://sourceforge.net/projects/modeliouml/files/${pkgver}/modelio-open-source${pkgmajorver}_${pkgver}-${pkgdaterel}_amd64.deb/download
 ")
+
 #noextract=()
 #validpgpkeys=()
 sha256sums=('SKIP'
@@ -50,7 +53,7 @@ sha256sums_x86_64=('SKIP')
 #}
 
 prepare() {
-    ar p modelio-${pkgver}-${CARCH} data.tar.gz | tar zx
+    ar p modelio-${pkgver}-${CARCH} data.tar.xz | tar xJ
 }
 
 #build() {
@@ -63,5 +66,5 @@ package() {
     install -dm755 "${pkgdir}/usr/share/applications/"
     install -dm755 "${pkgdir}/opt/modelio"
     install -Dm755 "${srcdir}/modelio.desktop" "${pkgdir}/usr/share/applications/"
-    cp -r "${srcdir}"/usr/lib/modelio-open-source3.6/* "${pkgdir}/opt/modelio/"
+    cp -r "${srcdir}"/usr/lib/modelio-open-source${pkgmajorver}/* "${pkgdir}/opt/modelio/"
 }
