@@ -1,0 +1,23 @@
+From fe80c16937d139ced59c37d2f6cd5c7e1ea05eee Mon Sep 17 00:00:00 2001
+From: Yann Mortier <yann.mortier@obeo.fr>
+Date: Wed, 15 Nov 2017 16:58:23 +0100
+Subject: [PATCH] Fix #976
+
+Fix compilation issue with oxygen target platform.
+---
+ .../gen/java/ui/properties/LaunchConfigurationPropertiesPage.java       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plugins/org.eclipse.umlgen.gen.java.ui/src/org/eclipse/umlgen/gen/java/ui/properties/LaunchConfigurationPropertiesPage.java b/plugins/org.eclipse.umlgen.gen.java.ui/src/org/eclipse/umlgen/gen/java/ui/properties/LaunchConfigurationPropertiesPage.java
+index 95f7d23a..f9f4ea1b 100644
+--- a/plugins/org.eclipse.umlgen.gen.java.ui/src/org/eclipse/umlgen/gen/java/ui/properties/LaunchConfigurationPropertiesPage.java
++++ b/plugins/org.eclipse.umlgen.gen.java.ui/src/org/eclipse/umlgen/gen/java/ui/properties/LaunchConfigurationPropertiesPage.java
+@@ -411,7 +411,7 @@ public void doApply() {
+         }
+ 
+         @Override
+-        protected ILaunchConfiguration handleApplyPressed() {
++        public ILaunchConfiguration handleApplyPressed() {
+             ILaunchConfiguration launchConfig = super.handleApplyPressed();
+ 
+             if (launchConfig != null && !combo.getText().equals(launchConfig.getName())) {

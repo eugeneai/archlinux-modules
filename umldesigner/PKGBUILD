@@ -6,7 +6,7 @@
 pkgname=umldesigner
 
 # Version
-pkgver=6.0.0
+pkgver=8.0.0
 pkgrel=1
 #epoch=
 
@@ -35,7 +35,7 @@ makedepends=('maven' 'ruby')
 changelog=changelog
 
 # Sources
-source=("https://github.com/ObeoNetwork/UML-Designer/archive/${pkgver}.tar.gz" "umldesigner.desktop")
+source=("https://github.com/ObeoNetwork/UML-Designer/archive/${pkgver}.tar.gz" "umldesigner.desktop" "compile.patch")
 #source_i686=()
 #source_x86_64=()
 #noextract=()
@@ -44,21 +44,25 @@ source=("https://github.com/ObeoNetwork/UML-Designer/archive/${pkgver}.tar.gz" "
 # Integrity
 #md5sums=('')
 #sha1sums=()
-sha256sums=('d79d0113e0913ecb638b59964c0c2031e6fc1de3c29c37c433c0fd4b4798ba80' 'SKIP')
+sha256sums=('60cc5e13b1d3e909139fd5731e30576fa3c8b2aa2edd5dc61de6d06858394928'
+            '075496c8b9c67bd8d5932675269ce728942566dd77341ca52ab134d9d6055bdf'
+            '75eceebe4ddf5422293275fc351e68024e65ab6790b605c39f16c0cd2c39eae6')
 
 #pkgver() {
 #}
 
 prepare() {
-  gem install jekyll --version '= 1.5.1'
-  gem install RedCloth
-  export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+  cd UML-Designer-${pkgver}
+  patch -p1 < $startdir/compile.patch
+  gem install jekyll jekyll-paginate jekyll-gist pygments.rb RedCloth
 }
 
 build() {
   # Build documentation web site
   cd UML-Designer-${pkgver}/documentation
-  jekyll build
+  gemdir="$(ruby -e 'print Gem.user_dir')"
+  #gemdir=`gem environment | grep "USER INSTALLATION DIRECTORY:" | cut -f 2 -d ":" | xargs`
+  $gemdir/bin/jekyll build
   cd ../
   # Integrate the documentation to Eclipse
   rm -rf plugins/org.obeonetwork.dsl.uml2.design.doc/html
