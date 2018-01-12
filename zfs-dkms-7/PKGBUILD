@@ -4,7 +4,7 @@
 
 pkgbase="zfs-dkms-7"
 pkgname=("zfs-dkms-7" "zfs-utils-7")
-_pkgver=0.7.3
+_pkgver=0.7.5
 _pkgver_base=${_pkgver%-*}
 pkgver=${_pkgver//-rc/.}
 pkgrel=1
@@ -16,7 +16,7 @@ source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${_pkgver}/zfs-
         "zfs.bash-completion-r1"
         "zfs.initcpio.install"
         "zfs.initcpio.hook")
-sha256sums=('cb8fc606835d3f91471e49aca31a6a0a71733b1cbe74fa510e0fe0efa670fe51'
+sha256sums=('1b826407418423379ff898c0e6ee0ada59c70754e6085a7663028330d0d8a44a'
             'b60214f70ffffb62ffe489cbfabd2e069d14ed2a391fac0e36f914238394b540'
             '17114052aa20c528f022f7f1349971aa28810e2ed2c97871226b5679a91f7e77'
             '138964b43d7a282e1ed5f7fcf1f8dc9baa4f664655b628eeac1912a3017a787b')

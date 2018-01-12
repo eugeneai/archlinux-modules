@@ -1,0 +1,91 @@
+# Maintainer=rafaelsoaresbr <rafaelsoaresbr@gmail.com>
+# umldesigner
+# Contributing: https://github.com/rafaelsoaresbr/pkgbuild
+# Builds: https://gitlab.com/rafaelsoaresbr/pkgbuild/builds
+#pkgbase=
+pkgname=umldesigner
+
+# Version
+pkgver=8.0.0
+pkgrel=1
+#epoch=
+
+# Generic
+pkgdesc="Graphical tooling to edit and visualize UML models"
+arch=('i686' 'x86_64')
+url="http://www.umldesigner.org/"
+license=('EPL')
+#groups=()
+
+# Dependencies
+#depends=('')
+#optdepends=()
+makedepends=('maven' 'ruby')
+#checkdepends=()
+
+# Package Relations
+#provides=()
+#conflicts=()
+#replaces=()
+
+# Others
+#backup=()
+#options=()
+#install=actor
+changelog=changelog
+
+# Sources
+source=("https://github.com/ObeoNetwork/UML-Designer/archive/${pkgver}.tar.gz" "umldesigner.desktop" "compile.patch")
+#source_i686=()
+#source_x86_64=()
+#noextract=()
+#validpgpkeys=()
+
+# Integrity
+#md5sums=('')
+#sha1sums=()
+sha256sums=('60cc5e13b1d3e909139fd5731e30576fa3c8b2aa2edd5dc61de6d06858394928'
+            '075496c8b9c67bd8d5932675269ce728942566dd77341ca52ab134d9d6055bdf'
+            '75eceebe4ddf5422293275fc351e68024e65ab6790b605c39f16c0cd2c39eae6')
+
+#pkgver() {
+#}
+
+prepare() {
+  cd UML-Designer-${pkgver}
+  patch -p1 < $startdir/compile.patch
+  gem install jekyll jekyll-paginate jekyll-gist pygments.rb RedCloth
+}
+
+build() {
+  # Build documentation web site
+  cd UML-Designer-${pkgver}/documentation
+  gemdir="$(ruby -e 'print Gem.user_dir')"
+  #gemdir=`gem environment | grep "USER INSTALLATION DIRECTORY:" | cut -f 2 -d ":" | xargs`
+  $gemdir/bin/jekyll build
+  cd ../
+  # Integrate the documentation to Eclipse
+  rm -rf plugins/org.obeonetwork.dsl.uml2.design.doc/html
+  cp -r documentation/_site plugins/org.obeonetwork.dsl.uml2.design.doc/html
+  # Build uml designer
+  mvn clean verify
+  # Build uml designer products
+  mvn clean package -f releng/org.obeonetwork.dsl.uml2.product.parent/pom.xml
+}
+
+#check() {
+#}
+
+package() {
+  install -dm755 "$pkgdir/usr/share/applications/"
+  install -dm755 "$pkgdir/usr/bin/"
+  install -Dm755 "$srcdir/umldesigner.desktop" "$pkgdir/usr/share/applications/"
+  if [[ "$CARCH" == "i686" ]]; then
+    cp -r "${srcdir}/UML-Designer-${pkgver}/packaging/org.obeonetwork.dsl.uml2.product\
+/target/products/org.obeonetwork.dsl.uml2.branding.product/linux/gtk/x86" "${pkgdir}/opt/"
+  elif [[ "$CARCH" == "x86_64" ]]; then
+    cp -r "${srcdir}/UML-Designer-${pkgver}/packaging/org.obeonetwork.dsl.uml2.product\
+/target/products/org.obeonetwork.dsl.uml2.branding.product/linux/gtk/x86_64" "${pkgdir}/opt/"
+  fi
+  ln -s "/opt/UMLDesigner/UMLDesigner" "${pkgdir}/usr/bin/UMLDesigner"
+}
