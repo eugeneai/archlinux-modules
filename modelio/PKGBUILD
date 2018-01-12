@@ -1,0 +1,62 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# The following guidelines are specific to BZR, GIT, HG and SVN packages.
+# Other VCS sources are not natively supported by makepkg yet.
+
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=modelio
+pkgmajorver=3.7
+pkgminorver=0
+pkgver=${pkgmajorver}.${pkgminorver}
+pkgrel=1
+pkgdesc="The opensource modeling environment"
+arch=('i686' 'x86_64')
+url="https://www.modelio.org/"
+license=('GPL3')
+# groups=()
+depends=('libxtst' 'libstdc++5' 'webkitgtk2' 'glib2' 'java-runtime')
+optdepends=('atk' 'gtk2' 'cairo')
+makedepends=('subversion' 'maven' 'java-environment')
+provides=("${pkgname%-VCS}")
+conflicts=("modelio-bin")
+#replaces=()
+#backup=()
+#options=()
+#install=
+source=('${pkgname}::http://forge.modelio.org/svn/modelio3-development-app/branches/modelio${pkgmajorver}/')
+noextract=()
+md5sums=('SKIP')
+
+# Please refer to the 'USING VCS SOURCES' section of the PKGBUILD man page for
+# a description of each element in the source array.
+
+# pkgver() {
+# 	# cd "$srcdir/${pkgname}"
+# 	# printf "r%s" "$(svnversion | tr -d 'A-z')"
+# }
+
+prepare() {
+	cd "$srcdir/${pkgname%-VCS}"
+	# patch -p1 -i "$srcdir/${pkgname%-VCS}.patch"
+}
+
+build() {
+	cd "$srcdir/${pkgname%-VCS}/AGGREGATOR"
+	#./autogen.sh
+	#./configure --prefix=/usr
+	#make
+    mvn package
+}
+
+check() {
+	#cd "$srcdir/${pkgname%-VCS}"
+	#make -k check
+}
+
+package() {
+	cd "$srcdir/${pkgname%-VCS}"
+	#make DESTDIR="$pkgdir/" install
+}
