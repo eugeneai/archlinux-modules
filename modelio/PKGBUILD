@@ -1,12 +1,4 @@
-# This is an example PKGBUILD file. Use this as a start to creating your own,
-# and remove these comments. For more information, see 'man PKGBUILD'.
-# NOTE: Please fill out the license field for your package! If it is unknown,
-# then please put 'unknown'.
-
-# The following guidelines are specific to BZR, GIT, HG and SVN packages.
-# Other VCS sources are not natively supported by makepkg yet.
-
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: Evgeny Cherkashin <eugeneai@irnok.net>
 pkgname=modelio
 pkgmajorver=3.7
 pkgminorver=0
@@ -26,7 +18,7 @@ conflicts=("modelio-bin")
 #backup=()
 #options=()
 #install=
-source=('${pkgname}::http://forge.modelio.org/svn/modelio3-development-app/branches/modelio${pkgmajorver}/')
+source=("${pkgname}-src::svn+http://forge.modelio.org/svn/modelio3-development-app/branches/modelio${pkgmajorver}/")
 noextract=()
 md5sums=('SKIP')
 
@@ -39,24 +31,20 @@ md5sums=('SKIP')
 # }
 
 prepare() {
-	cd "$srcdir/${pkgname%-VCS}"
+	cd "$srcdir/${pkgname}"
 	# patch -p1 -i "$srcdir/${pkgname%-VCS}.patch"
 }
 
 build() {
-	cd "$srcdir/${pkgname%-VCS}/AGGREGATOR"
-	#./autogen.sh
-	#./configure --prefix=/usr
-	#make
+	cd "$srcdir/${pkgname}/AGGREGATOR"
     mvn package
 }
 
 check() {
-	#cd "$srcdir/${pkgname%-VCS}"
-	#make -k check
+	cd "$srcdir/${pkgname}"
 }
 
 package() {
-	cd "$srcdir/${pkgname%-VCS}"
+	cd "$srcdir/${pkgname}"
 	#make DESTDIR="$pkgdir/" install
 }
