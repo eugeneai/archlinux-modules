@@ -22,29 +22,32 @@ source=("${pkgname}-src::svn+http://forge.modelio.org/svn/modelio3-development-a
 noextract=()
 md5sums=('SKIP')
 
-# Please refer to the 'USING VCS SOURCES' section of the PKGBUILD man page for
-# a description of each element in the source array.
-
-# pkgver() {
-# 	# cd "$srcdir/${pkgname}"
-# 	# printf "r%s" "$(svnversion | tr -d 'A-z')"
-# }
-
 prepare() {
-	cd "$srcdir/${pkgname}"
+	cd "$srcdir/${pkgname}-src"
 	# patch -p1 -i "$srcdir/${pkgname%-VCS}.patch"
 }
 
 build() {
-	cd "$srcdir/${pkgname}/AGGREGATOR"
+	cd "$srcdir/${pkgname}-src/AGGREGATOR"
     mvn package
 }
 
 check() {
-	cd "$srcdir/${pkgname}"
+	cd "$srcdir/${pkgname}-src"
 }
 
 package() {
-	cd "$srcdir/${pkgname}"
-	#make DESTDIR="$pkgdir/" install
+    optdir="${pkgdir}/opt/${pkgname}/"
+    mkdir -p ${optdir}
+    if [[ "${CARCH}" == "x86_64" ]]; then
+       msrcdir="$srcdir/${pkgname}-src/eclipse.resources/products/target/products/org.modelio.product/linux/gtk/${CARCH}/Modelio ${pkgmajorver}"
+    else
+       msrcdir="$srcdir/${pkgname}-src/eclipse.resources/products/target/products/org.modelio.product/linux/gtk/x86/Modelio ${pkgmajorver}"
+    fi
+
+    pushd "${msrcdir}"
+          cp -ra * "${optdir}"
+    popd
+    mkdir -p "${pkgdir}/usr/bin/"
+    ln -s "/opt/${pkgname}/${pkgname}" "${pkgdir}/usr/bin/modelio"
 }
