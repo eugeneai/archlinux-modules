@@ -8,8 +8,9 @@ pkgname=modelio-bin
 
 # Version
 pkgmajorver=3.7
-pkgver=${pkgmajorver}.0
-pkgrel=1
+pkgminorver=0
+pkgver=${pkgmajorver}.${pkgminorver}
+pkgrel=2
 pkgdaterel=201711211349
 
 # Generic
@@ -37,17 +38,18 @@ optdepends=('atk' 'gtk2' 'cairo')
 changelog=changelog
 
 # Sources
-source=("modelio.desktop" "changelog")
+source=("modelio.desktop" "changelog" "modelio")
 source_i686=("modelio-${pkgver}-i686::https://sourceforge.net/projects/modeliouml/files/${pkgver}/modelio-open-source${pkgmajorver}_${pkgver}-${pkgdaterel}_i386.deb/download")
 source_x86_64=("modelio-${pkgver}-x86_64::https://sourceforge.net/projects/modeliouml/files/${pkgver}/modelio-open-source${pkgmajorver}_${pkgver}-${pkgdaterel}_amd64.deb/download
 ")
 
 #noextract=()
 #validpgpkeys=()
-sha256sums=('SKIP'
-            'SKIP')
-sha256sums_i686=('SKIP')
-sha256sums_x86_64=('SKIP')
+sha256sums=('696e03139ed2f0ad632a982c4bceb214484b2cc0d519e2424f47e6317130240e'
+            'bf6e9ab5ed8e1809cf45582c510a2a88134643328050314e1d0efd07205130c8'
+            'cfa2f6602a68ba7e975faadc153ced6354d90fb14d78e5b3bcd19278ad266ea7')
+sha256sums_i686=('970b7f6d6f5e75570265ea6531098f0e3b90c8384c7fbc895f9a145c8d1c64c1')
+sha256sums_x86_64=('d4ff7b6d88aa8c77565345bbd1fed8cc13c4fad3c45f51f4d418638aad2873e1')
 
 #pkgver() {
 #}
@@ -67,4 +69,7 @@ package() {
     install -dm755 "${pkgdir}/opt/modelio"
     install -Dm755 "${srcdir}/modelio.desktop" "${pkgdir}/usr/share/applications/"
     cp -r "${srcdir}"/usr/lib/modelio-open-source${pkgmajorver}/* "${pkgdir}/opt/modelio/"
+    mkdir -p "${pkgdir}/usr/bin/"
+    cp "${startdir}"/modelio "${pkgdir}/usr/bin/"
+    chmod a+x "${pkgdir}/usr/bin/modelio"
 }
