@@ -1,0 +1,18 @@
+# Maintainer: Laurentiu Nicola <lnicola@dend.ro>
+pkgname=systemd-zfs-timers
+pkgver=1.0
+pkgrel=1
+pkgdesc="Systemd services for ZFS zpool scrubbing, and other templates"
+arch=('any')
+url="https://github.com/eugeneai/arch-packages/tree/master/systemd-zfs-timers"
+license=('MIT')
+depends=('zfs-utils')
+#source=("git+https://github.com/lnicola/systemd-zpool-scrub.git")
+#md5sums=('SKIP')
+
+package() {
+    pwd
+    install -Dm644 "../$pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -Dm644 "../$pkgname/zpool-scrub@.service" "$pkgdir/usr/lib/systemd/system/zpool-scrub@.service"
+    install -Dm644 "../$pkgname/zpool-scrub@.timer" "$pkgdir/usr/lib/systemd/system/zpool-scrub@.timer"
+}

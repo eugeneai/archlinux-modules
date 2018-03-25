@@ -54,3 +54,5 @@ dkms.conf
 /*/pkg
 /*/*.pkg.tar.gz
 /*/*.pkg.tar.xz
+*.tar.gz
+*.tar.xz

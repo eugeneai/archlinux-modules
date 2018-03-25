@@ -1,0 +1,13 @@
+[Unit]
+Description=Scrub ZFS pool weekly
+
+[Timer]
+
+# DayOfWeek Year-Month-Day Hour:Minute:Second
+# Mon,Tue *-*-01..04 12:00:00
+#
+OnCalendar=Sat *-*-* 01:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
