@@ -8,8 +8,8 @@
 
 pkgname=monodevelop-stable
 _pkgname=monodevelop
-pkgver=7.6.0.711
-pkgrel=1
+pkgver=7.6.0.1760
+pkgrel=100
 pkgdesc="An IDE primarily designed for C# and other .NET languages"
 arch=('x86_64' 'i686')
 url="http://www.monodevelop.com"
@@ -19,11 +19,14 @@ makedepends=('rsync' 'cmake' 'git' 'nuget4' 'openssl-1.0' 'xterm')
 replaces=('monodevelop-debugger-gdb')
 provides=('monodevelop' 'monodevelop-debugger-gdb')
 conflicts=('monodevelop')
-options=(!makeflags)
+options=(!makeflags !buildflags)
 optdepends=('xsp: To run ASP.NET pages directly from monodevelop')
 source=(git://github.com/mono/monodevelop.git#tag=monodevelop-$pkgver)
 sha256sums=('SKIP')
 TERM=xterm
+CPPFLAGS="-D_FORTIFY_SOURCE=2"
+CFLAGS="-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fPIC"
+CXXFLAGS="-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -fPIC"
 
 prepare() {
   cd $_pkgname
