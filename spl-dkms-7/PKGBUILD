@@ -4,7 +4,7 @@
 
 pkgbase="spl-dkms-7"
 pkgname=("spl-dkms-7" "spl-utils-7")
-_pkgver=0.7.9
+_pkgver=0.7.10
 _pkgver_base=${_pkgver%-*}
 pkgver=${_pkgver//-rc/.}
 pkgrel=1
@@ -14,7 +14,7 @@ arch=("i686" "x86_64")
 url="http://zfsonlinux.org/"
 source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${_pkgver}/spl-${_pkgver}.tar.gz"
         "spl-utils.hostid")
-sha256sums=('49832e446a5abce0b55ba245c9b5f94959604d44378320fdffae0233bf1e8c00'
+sha256sums=('9647e0fe9f19cd99746da3cc48b8de8903a66dacdccc82b45dbbb516606f4ff8'
             'ad95131bc0b799c0b1af477fb14fcf26a6a9f76079e48bf090acb7e8367bfd0e')
 
 build() {
@@ -53,7 +53,7 @@ package_spl-dkms-7() {
 
 package_spl-utils-7() {
     pkgdesc="Solaris Porting Layer kernel module support files -- release candidates"
-    conflicts=("spl-utils-git" "spl-utils-lts spl-utils")
+    conflicts=("spl-utils-git" "spl-utils-lts" "spl-utils")
 
     cd "${srcdir}/spl-${_pkgver_base}"
     make DESTDIR="${pkgdir}" install
