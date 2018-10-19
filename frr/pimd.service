@@ -1,0 +1,14 @@
+[Unit]
+Description=PIM multicast routing engine
+Documentation=man:pimd(8) man:zebra(8)
+BindTo=zebra.service
+After=network.target zebra.service
+
+[Service]
+Type=forking
+PIDFile=/run/frr/pimd.pid
+ExecStart=/usr/bin/pimd -d
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=LDP engine
+Documentation=man:ldpd(8) man:zebra(8)
+BindTo=zebra.service
+After=network.target zebra.service
+
+[Service]
+Type=forking
+PIDFile=/run/frr/ldpd.pid
+ExecStart=/usr/bin/ldpd -d
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
