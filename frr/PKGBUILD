@@ -15,6 +15,7 @@ provides=('quagga' 'quagga_cumulus')
 source=("https://github.com/FRRouting/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.sysusers"
         "${pkgname}.tmpfiles"
+        "000-rem-rec.patch"
         "babeld.service"
 	"bgpd.service"
 	"eigrpd.service"
@@ -34,6 +35,7 @@ source=("https://github.com/FRRouting/${pkgname}/archive/${pkgname}-${pkgver}.ta
 sha256sums=('3835d87e2329c1c08d1b2657312c0ba0155d8f442c338d60f0ddb51090f2f182'
             '9371cc0522d13621c623b5da77719052bdebdceb7ffdbdc06fc32a2f07118e7e'
             '6f8dd86ef9c600763faead3052908531e8dc8ef67058e6f7f8da01bf0fe4eb89'
+            'b936041757b2b612d88c9492b8a4a7d727ac41c1d6d10dc9a5245d372e5e94fe'
             'cd40b190816c0ac2df1c6b87af5e4dddb76d4e94e92d43705f7c13ccfe22b442'
             '361ac8793e4e2b06d0c3ae241a277a200c447a181139f5358a84e27e0220ba5a'
             'b230ca5202879d2301d77b0f1e47bd258e843dd100ee254dbf46f21343f17671'
@@ -54,7 +56,7 @@ prepare() {
   cd "${srcdir}/${pkgname}-${pkgname}-${pkgver}"
 
   # https://github.com/FRRouting/frr/issues/1422
-  # patch -p1 -i "${srcdir}/${pkgname}_5.0_systemd_arch.patch"
+  patch -p1 -i "${srcdir}/000-rem-rec.patch"
 
   autoreconf -fvi
   ./configure \
