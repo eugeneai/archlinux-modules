@@ -3,7 +3,7 @@
 
 pkgname='frr'
 pkgver='6.0'
-pkgrel='1'
+pkgrel='3'
 pkgdesc='FRRouting (quagga fork) supports BGP4, OSPFv2, OSPFv3, ISIS, RIP, RIPng, PIM, LDP, NHRP and EIGRP.'
 arch=('any')
 url="https://frrouting.org/"
@@ -15,48 +15,20 @@ provides=('quagga' 'quagga_cumulus')
 source=("https://github.com/FRRouting/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.sysusers"
         "${pkgname}.tmpfiles"
-        "000-rem-rec.patch"
-        "babeld.service"
-	"bgpd.service"
-	"eigrpd.service"
-	"frr.service"
-	"isisd.service"
-	"ldpd.service"
-        "nhrpd.service"
-        "ospfd-instance@.service"
-        "ospf6d.service"
-        "ospfd.service"
-        "pbrd.service"
-        "pimd.service"
-        "ripd.service"
-        "ripngd.service"
-	"zebra.service"
-)
+	"000-rem-rec.patch"
+        "${pkgname}_6.0_systemd_arch.patch")
 sha256sums=('3835d87e2329c1c08d1b2657312c0ba0155d8f442c338d60f0ddb51090f2f182'
             '9371cc0522d13621c623b5da77719052bdebdceb7ffdbdc06fc32a2f07118e7e'
             '6f8dd86ef9c600763faead3052908531e8dc8ef67058e6f7f8da01bf0fe4eb89'
             'b936041757b2b612d88c9492b8a4a7d727ac41c1d6d10dc9a5245d372e5e94fe'
-            'cd40b190816c0ac2df1c6b87af5e4dddb76d4e94e92d43705f7c13ccfe22b442'
-            '361ac8793e4e2b06d0c3ae241a277a200c447a181139f5358a84e27e0220ba5a'
-            'b230ca5202879d2301d77b0f1e47bd258e843dd100ee254dbf46f21343f17671'
-            '75183316a4705804f4744321e59a37b195f3d2b3da181bb056e91af2cf734ce3'
-            'c5fa730f3215b4b87bd2d269ecab65233ab39a86bdd410ef1618db5f6246be64'
-            'b1783953d2722f8c4b3606f9d85d1339b699b7d7a788714bb0e7c32ed23d78ac'
-            'efc1e644fc76f353336122f6330c9f8b6351b722e7d8f99c224263ec1f451489'
-            '4d87fa693808665bf108239b053f03efdb9285f68c75fdd4ffb7b5ca8981f719'
-            'a144d5062ef8332f25455256343afa70c478a8fd8d650f07f2db4665edfcb9d2'
-            '62f476e5aad27a5eb89d1c6a51d03b855035bf5dcf6f3e0da1330f89d2862660'
-            'cb7c36667d1db7523383d0b98ee6541a0ec21879ea63439f1c87de2f32bba6c2'
-            'ed03abf011110ad18f9aa8060271f8ec1580cffdc60eca14063f7883453c3cac'
-            '39e44c585a6d3d9b0095abfee139720d7bfc0cd0ad29c9649c788c1534aa0183'
-            '126bf7c04c97676437c837be5f0000858b00b4ef514fac776b159d3f021a57ca'
-            '0d7e0a4451cdfa28c480380f5f3ae780b09fb590f766cd0610b02147e05378c5')
+            '9d98a0b5d7016cb66fe3cbec234f70327f0a961de47f7eae39a5bd4477b072ce')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgname}-${pkgver}"
 
   # https://github.com/FRRouting/frr/issues/1422
   patch -p1 -i "${srcdir}/000-rem-rec.patch"
+  patch -p1 -i "${srcdir}/${pkgname}_6.0_systemd_arch.patch"
 
   autoreconf -fvi
   ./configure \
@@ -65,7 +37,6 @@ prepare() {
     --sysconfdir="/etc/${pkgname}" \
     --localstatedir="/run/${pkgname}" \
     --enable-exampledir="/etc/${pkgname}" \
-    --enable-ldpd \
     --disable-watchfrr \
     --enable-snmp="agentx" \
     --enable-multipath=256 \
@@ -75,13 +46,9 @@ prepare() {
     --enable-configfile-mask="0640" \
     --enable-logfile-mask="0640" \
     --enable-shell-access \
-    --enable-realms \
-    --disable-pcreposix \
     --enable-systemd \
-    --enable-poll="yes" \
-    --enable-shared \
-    --enable-irdp \
-    --enable-rpki
+    --enable-rpki \
+    --enable-fpm
 }
 
 build() {
@@ -97,14 +64,19 @@ check() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  # install -Dm0644 "zebra/GNOME-PRODUCT-ZEBRA-MIB" "${pkgdir}/usr/share/snmp/mibs/GNOME-PRODUCT-ZEBRA-MIB"
+  install -Dm0644 "bgpd/BGP4-MIB.txt" "${pkgdir}/usr/share/snmp/mibs/BGP4-MIB.txt"
+  install -Dm0644 "eigrpd/EIGRP-MIB.txt" "${pkgdir}/usr/share/snmp/mibs/EIGRP-MIB.txt"
+  install -Dm0644 "ospf6d/OSPFv3-MIB.txt" "${pkgdir}/usr/share/snmp/mibs/OSPFv3-MIB.txt"
+  install -Dm0644 "ospfd/OSPF-MIB.txt" "${pkgdir}/usr/share/snmp/mibs/OSPF-MIB.txt"
+  install -Dm0644 "ospfd/OSPF-TRAP-MIB.txt" "${pkgdir}/usr/share/snmp/mibs/OSPF-TRAP-MIB.txt"
+  install -Dm0644 "ripd/RIPv2-MIB.txt" "${pkgdir}/usr/share/snmp/mibs/RIPv2-MIB.txt"
 
   cd "redhat"
   sed -ri 's|/var/run/frr|/run/frr|g' "${pkgname}.logrotate"
   install -Dm0644 "${pkgname}.logrotate" "${pkgdir}/etc/logrotate.d/${pkgname}"
 
-  for d in babeld bgpd eigrpd isisd ldpd nhrpd ospf6d ospfd ospfd-instance@ pbrd pimd ripd ripngd zebra; do
-    install -Dm0644 "${srcdir}/${d}.service" "${pkgdir}/usr/lib/systemd/system/${d}.service"
+  for d in babeld bgpd bfdd eigrpd isisd ldpd nhrpd ospf6d ospfd ospfd-instance@ pbrd pimd ripd ripngd staticd zebra; do
+    install -Dm0644 ${d}.service "${pkgdir}/usr/lib/systemd/system/${d}.service"
   done
 
   install -Dm0644 "${srcdir}/${pkgname}.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
