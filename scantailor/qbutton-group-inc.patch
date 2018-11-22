@@ -1,0 +1,10 @@
+--- tmp/scantailor-EXPERIMENTAL_2015_10_27/filters/page_split/OptionsWidget.cpp	2015-10-28 05:08:01.000000000 +0800
++++ src/scantailor-EXPERIMENTAL_2015_10_27/filters/page_split/OptionsWidget.cpp	2018-11-22 18:21:00.787191154 +0800
+@@ -26,6 +26,7 @@
+ #include "ProjectPages.h"
+ #include "ScopedIncDec.h"
+ #include <QPixmap>
++#include <QButtonGroup>
+ #include <boost/foreach.hpp>
+ #include <assert.h>
+ 
