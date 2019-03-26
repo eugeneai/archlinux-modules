@@ -3,7 +3,7 @@
 
 pkgname='frr'
 pkgver='7.0'
-pkgrel='2'
+pkgrel='3'
 pkgdesc='FRRouting (quagga fork) supports BGP4, OSPFv2, OSPFv3, ISIS, RIP, RIPng, PIM, LDP, NHRP and EIGRP.'
 arch=('any')
 url="https://frrouting.org/"
@@ -17,11 +17,13 @@ provides=('quagga' 'quagga_cumulus')
 source=("https://github.com/FRRouting/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.sysusers"
         "${pkgname}.tmpfiles"
-        "frrcommon.sh.in.diff")
+        "frrcommon.sh.in.diff"
+        "000-rem-rec.patch")
 sha256sums=('15b62dc0c52531e4bcefa6b830e9b9b07d1d0f189c2110307dbc19d80b719354'
             '9371cc0522d13621c623b5da77719052bdebdceb7ffdbdc06fc32a2f07118e7e'
             '6f8dd86ef9c600763faead3052908531e8dc8ef67058e6f7f8da01bf0fe4eb89'
-            'e90fcd400b0acd84913146ab848af0657a072b4ef9e375bfd019983d41be768a')
+            'e90fcd400b0acd84913146ab848af0657a072b4ef9e375bfd019983d41be768a'
+            '1cd3780604fba90fcbce9c0fc69e261a4a22abe123faf155035ab359bc0d151f')
 
 NoUpgrade=('etc/frr/*.conf')
 
@@ -29,6 +31,7 @@ prepare() {
   cd "${srcdir}/${pkgname}-${pkgname}-${pkgver}"
   
   cd tools && patch -i "${srcdir}/frrcommon.sh.in.diff" && cd ..
+  patch -p1 -i "${srcdir}/000-rem-rec.patch"
 
   autoreconf -fvi
   ./configure \
