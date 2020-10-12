@@ -1,24 +1,58 @@
-diff -ru frr-frr-7.4/lib/table.h /home/eugeneai/tmp/frr-new/src/frr-frr-7.4/lib/table.h
+diff -ru frr-frr-7.4/lib/table.h /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/lib/table.h
 --- frr-frr-7.4/lib/table.h	2020-06-30 19:08:57.000000000 +0800
-+++ /home/eugeneai/tmp/frr-new/src/frr-frr-7.4/lib/table.h	2020-10-11 03:06:11.822840367 +0800
-@@ -248,7 +248,7 @@
++++ /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/lib/table.h	2020-10-13 00:06:13.885933912 +0800
+@@ -26,6 +26,7 @@
+ #include "hash.h"
+ #include "prefix.h"
+ #include "typesafe.h"
++#include "stdatomic.h"
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -248,7 +249,7 @@
  /* Lock node. */
  static inline struct route_node *route_lock_node(struct route_node *node)
  {
 -	(*(unsigned *)&node->lock)++;
-+	node->lock+=1;
++	atomic_fetch_add_explicit(&node->lock, 1, memory_order_relaxed);
  	return node;
  }
  
-@@ -256,7 +256,7 @@
+@@ -256,7 +257,7 @@
  static inline void route_unlock_node(struct route_node *node)
  {
  	assert(node->lock > 0);
 -	(*(unsigned *)&node->lock)--;
-+	node->lock-=1;
++	atomic_fetch_sub_explicit(&node->lock, 1, memory_order_relaxed);
  
  	if (node->lock == 0)
  		route_node_delete(node);
+diff -ru frr-frr-7.4/ospf6d/ospf6_lsdb.c /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/ospf6d/ospf6_lsdb.c
+--- frr-frr-7.4/ospf6d/ospf6_lsdb.c	2020-06-30 19:08:57.000000000 +0800
++++ /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/ospf6d/ospf6_lsdb.c	2020-10-13 00:00:10.768154893 +0800
+@@ -314,9 +314,19 @@
+ void ospf6_lsdb_lsa_unlock(struct ospf6_lsa *lsa)
+ {
+ 	if (lsa != NULL) {
+-		if (lsa->rn != NULL)
+-			route_unlock_node(lsa->rn);
+-		ospf6_lsa_unlock(lsa);
++		struct route_node *nextrn = lsa->rn;
++		if (nextrn != NULL) {
++			struct ospf6_lsa *nextlsa = nextrn->info;
++			if (nextlsa != NULL) {
++				nextrn->info = NULL; // Prevent possible recusion
++				if (nextlsa->lock>0)
++					ospf6_lsdb_lsa_unlock(nextlsa);
++			}
++			if (nextrn->lock > 0)
++				route_unlock_node(nextrn);
++		}
++		if (lsa->lock>0)
++			ospf6_lsa_unlock(lsa);
+ 	}
+ }
+ 
 diff -Naupr frr-frr-7.3_orig/tools/etc/frr/daemons frr-frr-7.3/tools/etc/frr/daemons
 --- frr-frr-7.3_orig/tools/etc/frr/daemons	2020-02-14 21:03:09.000000000 +0700
 +++ frr-frr-7.3/tools/etc/frr/daemons	2020-02-26 15:20:16.080215154 +0700
