@@ -1,6 +1,6 @@
-diff -ru frr-frr-7.4/lib/table.h /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/lib/table.h
---- frr-frr-7.4/lib/table.h	2020-06-30 19:08:57.000000000 +0800
-+++ /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/lib/table.h	2020-10-13 00:06:13.885933912 +0800
+diff -ru /home/eugeneai/tmp/archlinux-modules/frr/frr-frr-7.4/lib/table.h frr-frr-7.4/lib/table.h
+--- /home/eugeneai/tmp/archlinux-modules/frr/frr-frr-7.4/lib/table.h	2020-06-30 19:08:57.000000000 +0800
++++ frr-frr-7.4/lib/table.h	2020-10-13 01:19:07.193188711 +0800
 @@ -26,6 +26,7 @@
  #include "hash.h"
  #include "prefix.h"
@@ -27,9 +27,9 @@ diff -ru frr-frr-7.4/lib/table.h /home/eugeneai/tmp/archlinux-modules/frr/src/fr
  
  	if (node->lock == 0)
  		route_node_delete(node);
-diff -ru frr-frr-7.4/ospf6d/ospf6_lsdb.c /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/ospf6d/ospf6_lsdb.c
---- frr-frr-7.4/ospf6d/ospf6_lsdb.c	2020-06-30 19:08:57.000000000 +0800
-+++ /home/eugeneai/tmp/archlinux-modules/frr/src/frr-frr-7.4/ospf6d/ospf6_lsdb.c	2020-10-13 00:00:10.768154893 +0800
+diff -ru /home/eugeneai/tmp/archlinux-modules/frr/frr-frr-7.4/ospf6d/ospf6_lsdb.c frr-frr-7.4/ospf6d/ospf6_lsdb.c
+--- /home/eugeneai/tmp/archlinux-modules/frr/frr-frr-7.4/ospf6d/ospf6_lsdb.c	2020-06-30 19:08:57.000000000 +0800
++++ frr-frr-7.4/ospf6d/ospf6_lsdb.c	2020-10-13 01:19:08.313177781 +0800
 @@ -314,9 +314,19 @@
  void ospf6_lsdb_lsa_unlock(struct ospf6_lsa *lsa)
  {
@@ -53,6 +53,21 @@ diff -ru frr-frr-7.4/ospf6d/ospf6_lsdb.c /home/eugeneai/tmp/archlinux-modules/fr
  	}
  }
  
+diff -ru /home/eugeneai/tmp/archlinux-modules/frr/frr-frr-7.4/ospf6d/ospf6_message.c frr-frr-7.4/ospf6d/ospf6_message.c
+--- /home/eugeneai/tmp/archlinux-modules/frr/frr-frr-7.4/ospf6d/ospf6_message.c	2020-06-30 19:08:57.000000000 +0800
++++ frr-frr-7.4/ospf6d/ospf6_message.c	2020-10-13 01:19:09.063170460 +0800
+@@ -2399,6 +2399,11 @@
+ 	for (iterend = ospf6_lsdb_head(oi->lsack_list, 0, 0, 0, &lsa); lsa;
+ 	     lsa = lsa_next) {
+ 		lsa_next = ospf6_lsdb_next(iterend, lsa);
++
++		if (lsa->lock != 1) {
++			continue;
++		}
++
+ 		/* MTU check */
+ 		if (p - sendbuf + sizeof(struct ospf6_lsa_header)
+ 		    > ospf6_packet_max(oi)) {
 diff -Naupr frr-frr-7.3_orig/tools/etc/frr/daemons frr-frr-7.3/tools/etc/frr/daemons
 --- frr-frr-7.3_orig/tools/etc/frr/daemons	2020-02-14 21:03:09.000000000 +0700
 +++ frr-frr-7.3/tools/etc/frr/daemons	2020-02-26 15:20:16.080215154 +0700
