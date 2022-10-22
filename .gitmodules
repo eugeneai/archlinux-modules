@@ -1,3 +1,6 @@
 [submodule "frr-arch"]
 	path = frr-arch
 	url = git@github.com:eugeneai/frr-arch.git
+[submodule "logtalk"]
+	path = logtalk
+	url = ssh://aur@aur.archlinux.org/logtalk.git
