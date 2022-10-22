@@ -4,3 +4,6 @@
 [submodule "logtalk"]
 	path = logtalk
 	url = ssh://aur@aur.archlinux.org/logtalk.git
+[submodule "lain-git"]
+	path = lain-git
+	url = https://aur.archlinux.org/lain-git.git
