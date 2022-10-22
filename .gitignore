@@ -56,3 +56,4 @@ dkms.conf
 /*/*.pkg.tar.xz
 *.tar.gz
 *.tar.xz
+.local
