@@ -1,0 +1,24 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 0fd87b7..4e17110 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -4,8 +4,8 @@
+ # Contributor: Massimiliano Torromeo <massimiliano DOT torromeo AT google mail service>
+ 
+ pkgname=virtuoso
+-pkgver=7.2.4.2
+-pkgrel=3
++pkgver=7.2.8
++pkgrel=1
+ arch=('x86_64')
+ url='http://virtuoso.openlinksw.com/wiki/main/Main/'
+ license=('GPL')
+@@ -18,7 +18,7 @@ replaces=('virtuoso-base')
+ provides=('virtuoso-base')
+ install=virtuoso.install
+ source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-opensource-${pkgver}.tar.gz" virtuoso.service)
+-md5sums=('11b081934ab4698f0f341e1b410fc4fe'
++md5sums=('9f75b289c663cffc7af048d04fb635cc'
+          '4dc007d22588c5933650984a7863d4d0')
+ 
+ prepare() {
